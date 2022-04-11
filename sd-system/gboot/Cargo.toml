@@ -1,0 +1,33 @@
+[package]
+name = "gboot"
+version = "0.1.0"
+edition = "2018"
+
+[profile.release]
+lto = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default             = ["tock-registers"]
+bsp_firefly-rk3399  = ["tock-registers"]
+bsp_rpi4            = ["tock-registers"]
+
+[[bin]]
+name = "kernel"
+path = "src/main.rs"
+
+
+[dependencies]
+# Optional dependencies
+tock-registers = { version = "0.7.x", features = ["register_types"], optional = true }
+lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
+
+# Platform specific dependencies
+#[target.'cfg(target_arch = "aarch64")'.dependencies]
+cortex-a = { version = "6.x.x" }
+
+
+[profile.dev]
+# more in https://doc.rust-lang.org/cargo/reference/profiles.html
+opt-level = "z"
